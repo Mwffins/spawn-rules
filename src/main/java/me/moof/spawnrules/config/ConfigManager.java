@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.*;
 
 public class ConfigManager {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -67,5 +68,71 @@ public class ConfigManager {
         }
 
         return false;
+    }
+
+    public static boolean isMobBlocked(EntityType<?> type, String dimension) {
+        if (config == null || config.dimensions == null) {
+            return false;
+        }
+        SpawnRulesConfig.DimensionConfig dimConfig = config.dimensions.get(dimension);
+        if (dimConfig == null) {
+            return false;
+        }
+        String typeId = BuiltInRegistries.ENTITY_TYPE.getKey(type).toString();
+        return dimConfig.blockedTypes != null && dimConfig.blockedTypes.contains(typeId);
+    }
+
+    public static boolean isCategoryBlocked(String category, String dimension) {
+        if (config == null || config.dimensions == null) {
+            return false;
+        }
+        SpawnRulesConfig.DimensionConfig dimConfig = config.dimensions.get(dimension);
+        if (dimConfig == null) {
+            return false;
+        }
+        return dimConfig.blockedCategories != null && dimConfig.blockedCategories.contains(category);
+    }
+
+    public static void toggleMob(EntityType<?> type, String dimension) {
+        if (config == null) {
+            config = new SpawnRulesConfig();
+        }
+        if (config.dimensions == null) {
+            config.dimensions = new HashMap<>();
+        }
+
+        SpawnRulesConfig.DimensionConfig dimConfig = config.dimensions.computeIfAbsent(dimension, k -> new SpawnRulesConfig.DimensionConfig());
+        if (dimConfig.blockedTypes == null) {
+            dimConfig.blockedTypes = new ArrayList<>();
+        }
+
+        String typeId = BuiltInRegistries.ENTITY_TYPE.getKey(type).toString();
+        if (dimConfig.blockedTypes.contains(typeId)) {
+            dimConfig.blockedTypes.remove(typeId);
+        } else {
+            dimConfig.blockedTypes.add(typeId);
+        }
+        save();
+    }
+
+    public static void toggleCategory(String category, String dimension) {
+        if (config == null) {
+            config = new SpawnRulesConfig();
+        }
+        if (config.dimensions == null) {
+            config.dimensions = new HashMap<>();
+        }
+
+        SpawnRulesConfig.DimensionConfig dimConfig = config.dimensions.computeIfAbsent(dimension, k -> new SpawnRulesConfig.DimensionConfig());
+        if (dimConfig.blockedCategories == null) {
+            dimConfig.blockedCategories = new ArrayList<>();
+        }
+
+        if (dimConfig.blockedCategories.contains(category)) {
+            dimConfig.blockedCategories.remove(category);
+        } else {
+            dimConfig.blockedCategories.add(category);
+        }
+        save();
     }
 }
