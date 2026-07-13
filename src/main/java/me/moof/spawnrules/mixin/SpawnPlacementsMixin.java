@@ -9,6 +9,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import me.moof.spawnrules.config.ConfigManager;
+
 @Mixin(SpawnPlacements.class)
 public class SpawnPlacementsMixin {
 
@@ -25,8 +27,11 @@ public class SpawnPlacementsMixin {
             RandomSource random,
             CallbackInfoReturnable<Boolean> cir
     ) {
-        if (type == EntityTypes.ZOMBIE && spawnReason != EntitySpawnReason.LOAD) {
-            cir.setReturnValue(false);
+        if (spawnReason != EntitySpawnReason.LOAD) {
+            String dimension = level.getLevel().dimension().identifier().toString();
+            if (ConfigManager.isBlocked(type, dimension)) {
+                cir.setReturnValue(false);
+            }
         }
     }
 }
