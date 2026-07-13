@@ -8,8 +8,8 @@
 		"Moof"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://moof.run/",
+		"sources": "https://github.com/mwffins/spawn-rules"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/spawn-rules/icon.png",
