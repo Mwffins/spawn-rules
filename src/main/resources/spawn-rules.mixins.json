@@ -3,7 +3,8 @@
 	"package": "me.moof.spawnrules.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
-		"SpawnPlacementsMixin"
+		"SpawnPlacementsMixin",
+		"EntityTypeMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
