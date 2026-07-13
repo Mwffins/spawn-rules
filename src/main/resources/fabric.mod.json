@@ -3,9 +3,9 @@
 	"id": "spawn-rules",
 	"version": "${version}",
 	"name": "Spawn Rules",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Customise your world's mob spawning rules, per-mob and per-dimension",
 	"authors": [
-		"Me!"
+		"Moof"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
